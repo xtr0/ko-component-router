@@ -4,6 +4,8 @@ import { factory as queryFactory } from './query'
 import { factory as stateFactory } from './state'
 import { cascade, deepEquals, extend, merge } from './utils'
 
+const __slice = Array.prototype.slice
+
 export default class Context {
   constructor(bindingCtx, config) {
     bindingCtx.$router = this
@@ -46,11 +48,11 @@ export default class Context {
   }
 
   update(_, __, push) {
+    const args = __slice.call(arguments)
     if (this._queuedArgs) {
-      const [,,p] = this._queuedArgs
-      arguments[2] = p || push
+      args[2] = this._queuedArgs[2] || push
     }
-    this._queuedArgs = arguments
+    this._queuedArgs = args
 
     if (this._queuedUpdate) {
       return this._queuedUpdate
@@ -72,7 +74,7 @@ export default class Context {
     const firstRun = this.route() === ''
 
     if (!route) {
-      return this.$parent ? this.$parent.update(...arguments) : Promise.resolve(false)
+      return this.$parent ? this.$parent.update(...__slice.call(arguments)) : Promise.resolve(false)
     }
 
     const fromCtx = this.toJS()

@@ -293,7 +293,11 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var __slice = Array.prototype.slice;
 
 	var Context = function () {
 	  function Context(bindingCtx, config) {
@@ -343,14 +347,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	    value: function update(_, __, push) {
 	      var _this = this;
 
+	      var args = __slice.call(arguments);
 	      if (this._queuedArgs) {
-	        var _queuedArgs = _slicedToArray(this._queuedArgs, 3);
-
-	        var p = _queuedArgs[2];
-
-	        arguments[2] = p || push;
+	        args[2] = this._queuedArgs[2] || push;
 	      }
-	      this._queuedArgs = arguments;
+	      this._queuedArgs = args;
 
 	      if (this._queuedUpdate) {
 	        return this._queuedUpdate;
@@ -382,7 +383,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      if (!route) {
 	        var _$parent;
 
-	        return this.$parent ? (_$parent = this.$parent).update.apply(_$parent, arguments) : Promise.resolve(false);
+	        return this.$parent ? (_$parent = this.$parent).update.apply(_$parent, _toConsumableArray(__slice.call(arguments))) : Promise.resolve(false);
 	      }
 
 	      var fromCtx = this.toJS();
